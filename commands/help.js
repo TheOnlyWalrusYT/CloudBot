@@ -9,8 +9,10 @@ module.exports.run = async (bot, message, args) => {
     .addField("Bot Information", "Usage: .botinfo")
     .addField("Help", "You know how to use this.")
     .addField("Kick", "Usage: .kick @user (reason)")
+    .addField("Mute", "Usage: .mute @user (time | s | m | d |)")
     .addField("Report", "Usage: .report @user (reason)")
     .addField("Server Information", "Usage: .serverinfo")
+    .addField("Warn", "Usage: .warn @user (reason)")
 
     message.channel.send(helpEmbed);
 
