@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
     
-    let helpEmbed = new Discord.RichEmbed
+    let helpEmbed = new Discord.RichEmbed()
     .setDescription("-Commands-")
     .setColor("#ff7700")
     .addField("Ban", "Usage: .ban @user (reason)")
