@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, prefix) => {
 
     if(!message.member.hasPermission("MANAGE_SERVER")) return message.channel.send("You don't have the required permission to use that command!");
     if(!args[0]);
@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
         prefixes: args[0]
     };
 
-    fs.writeFile("./prefixes.json", JSON.stringify(prefixes) (err) => {
+    fs.writeFile("./prefixes.json", JSON.stringify(prefixes), (err) => {
         if (err) console.log(err)
     });
 
