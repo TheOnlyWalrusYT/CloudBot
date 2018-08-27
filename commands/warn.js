@@ -5,10 +5,10 @@ let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 module.exports.run = async (bot, message, args) => {
 
-    if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.reply("You don't have the required permssions to use that command!");
+    if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("You don't have the required permssions to use that command!");
     let wUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
     if(!wUser) return message.channel.send("Couldn't find the mentioned user!");
-    if(wUser.hasPermission("MANAGE_MEMBERS")) return message.reply("This person can't be warned!");
+    if(wUser.hasPermission("KICK_MEMBERS")) return message.reply("This person can't be warned!");
     let wReason = args.join(" ").slice(22);
 
     if(!warns[wUser.id]) warns[wUser.id] = {
@@ -25,10 +25,10 @@ module.exports.run = async (bot, message, args) => {
     .setDescription("Warns")
     .setAuthor(message.author.username)
     .setColor("#ffff00")
-    .addField("Warned User", wUser.tag)
+    .addField("Warned User", `<@${wUser.id}>`)
     .addField("Channel Warned In", message.channel)
     .addField("Number of Warnings", warns[wUser.id].warns)
-    .addField("Reason", reason);
+    .addField("Reason", wReason);
 
     let warnchannel = message.guild.channels.find(`name`, "warnings");
     if(!warnchannel) return message.channel.send("Couldn't find a warnings channel. If there is one make sure it is spelled correctly.");
@@ -39,19 +39,19 @@ module.exports.run = async (bot, message, args) => {
         let muterole = message.guild.roles.find(`name`, "muted");
         if(!muterole) return message.channel.send("There is no muted role!");
 
-        let mutetime = "1m";
+        let mutetime = "60s";
         await(wUser.addRole(muterole.id));
-        message.channel.send(`${wUser.tag} has been muted for 1 minute for recieving their second warning!`);
+        message.channel.send(`${wUser.id} has been muted for 1 minute for recieving their second warning!`);
 
         setTimeout(function(){
             wUser.removeRole(muterole.id)
-            message.channel.send(`${wUser.tag} has been unmuted!`)
+            message.channel.send(`${wUser.id} has been unmuted!`)
         })
     }
     
     if(warns[wUser.id].warns == 5){
-        message.guild.member(wUser).ban(reason);
-        message.channel.send(`${wUser.tag} has been banned for recieving their fifth warning!`);
+        message.guild.member(wUser).ban(wReason);
+        message.channel.send(`${wUser.id} has been banned for recieving their fifth warning!`);
     }
 
 

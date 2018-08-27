@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args) => {
         if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You do not have the required permissions to use that command!");
         if(bUser.hasPermission("BAN_MEMBERS")) return message.channel.send("That person cannot be banned!")
 
-        let banEmbed = new Discord.RichEmbed
+        let banEmbed = new Discord.RichEmbed()
         .setDescription("-Ban-")
         .setColor("#ff7700")
         .addField("Banned User", `${bUser} with ID ${bUser.id}`)

@@ -26,11 +26,43 @@ bot.on("ready", async () => {
     bot.user.setActivity("Say '.help' for help!")
 });
 
+bot.on("guildMemberAdd", async member => {
+    console.log(`${member.id} joined a server that has CloudBot in it!`);
+
+    let welcomechannel = member.guild.channels.find(`name`, "welcome");
+    welcomechannel.send(`${member} has joined the server!`);
+});
+
+bot.on("guildMemberRemove", async member => {
+    console.log(`${member.id} left a server that has CloudBot in it!`);
+
+    let goodbyechannel = member.guild.channels.find(`name`, "welcome");
+    goodbyechannel.send(`${member} has left the server!`);
+});
+
+bot.on("channelCreate", async channel => {
+    let cChannel = channel.guild.channels.find(`name`, "general");
+    cChannel.send(`${channel} has been created!`)
+});
+
+bot.on("channelDelete", async channel => {
+    let rChannel = channel.guild.channels.find(`name`, "general");
+    rChannel.send(`${channel.name} has been created!`)
+});
+
 bot.on("message", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return;
 
-    let prefix = config.prefix;
+    let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
+
+    if(!prefixes[message.guild.id]){
+        prefixes[message.guild.id] = {
+            prefixes: config.prefix
+        };
+    }
+
+    let prefix = prefixes[message.guild.id].prefixes;
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
