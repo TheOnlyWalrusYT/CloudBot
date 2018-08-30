@@ -42,15 +42,7 @@ bot.on("guildMemberRemove", async member => {
     goodbyechannel.send(`${member} has left the server!`);
 });
 
-bot.on("channelCreate", async channel => {
-    let cChannel = channel.guild.channels.find(`name`, "general");
-    cChannel.send(`${channel} has been created!`)
-});
 
-bot.on("channelDelete", async channel => {
-    let rChannel = channel.guild.channels.find(`name`, "general");
-    rChannel.send(`${channel.name} has been created!`)
-});
 
 bot.on("message", async message => {
     if(message.author.bot) return;
