@@ -1,10 +1,12 @@
 const config = require("./config.json");
+const tokenfile = require("./token.json");
 const Discord = require("discord.js");
 const bot = new Discord.Client({disableEveryone: true});
 const fs = require("fs");
 bot.commands = new Discord.Collection();
 let xp = require("./xp.json");
 let purple = config.purple;
+const prefix = require("./config.json");
 
 fs.readdir("./commands", (err, file) =>{
     if(err) console.log(err);
@@ -48,14 +50,6 @@ bot.on("message", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return;
 
-    let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
-
-    if(!prefixes[message.guild.id]){
-        prefixes[message.guild.id] = {
-            prefixes: config.prefix
-        };
-    }
-
     let xpAdd = Math.floor(Math.random() * 7) + 8;
 
     if(!xp[message.author.id]){
@@ -82,7 +76,7 @@ bot.on("message", async message => {
         if(err) console.log(err)
     });
 
-    let prefix = prefixes[message.guild.id].prefixes;
+    let prefix = (config.prefix);
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
@@ -92,4 +86,4 @@ bot.on("message", async message => {
 
 });
 
-bot.login(config.token);
+bot.login(tokenfile.token);
